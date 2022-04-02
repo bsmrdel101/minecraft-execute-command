@@ -14,6 +14,7 @@ import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
 
 import LoginPage from '../LoginPage/LoginPage';
 import RegisterPage from '../RegisterPage/RegisterPage';
+import HomePage from '../HomePage/HomePage';
 
 import './App.css';
 
@@ -31,6 +32,8 @@ function App() {
       <div>
         <Nav />
         <Switch>
+          {/* Visiting localhost:3000 will redirect to localhost:3000/home */}
+          <Redirect exact from="/" to="/home" />
           {/* For protected routes, the view could show one of several things on the same route.
             Visiting localhost:3000/user will show the UserPage if the user is logged in.
             If the user is not logged in, the ProtectedRoute will show the LoginPage (component).
@@ -40,7 +43,11 @@ function App() {
             exact
             path="/home"
           >
-            <HomePage />
+            {user.id ?
+              <HomePage />
+            :
+              <RegisterPage />
+            }
           </ProtectedRoute>
 
           <Route
@@ -50,7 +57,7 @@ function App() {
             {user.id ?
               // If the user is already logged in, 
               // redirect to the /user page
-              <Redirect to="/user" />
+              <Redirect to="/home" />
               :
               // Otherwise, show the login page
               <LoginPage />
